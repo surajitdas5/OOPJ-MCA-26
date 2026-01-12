@@ -1,52 +1,45 @@
 @echo off
+setlocal
 Title Git Sync Utility - Silicon
 color 0A
 
 :: ----------------------------------------------------------
-:: STEP 0: Debug Pause (To stop immediate closing if errors occur)
+:: CONFIGURATION: Direct Key Mode (Syntax Fixed)
 :: ----------------------------------------------------------
-echo Starting Git Sync Utility...
+:: We use forward slashes (/) for the key path. 
+:: We removed the outer quotes that were causing the crash.
+set GIT_SSH_COMMAND=ssh -i "%USERPROFILE%/.ssh/silicon" -o IdentitiesOnly=yes
+
+echo ========================================================
+echo   Git Sync Utility: Direct Key Mode
+echo ========================================================
+echo.
 
 :: ----------------------------------------------------------
-:: STEP 1: Ensure SSH Agent is running
+:: STEP 1: Pull latest changes
 :: ----------------------------------------------------------
-echo [Step 1] Checking SSH Agent...
+echo [Step 1] Pulling updates from origin/main...
 
-:: Try to start the agent quietly.
-:: Note: This command (net start) often fails if not run as Admin, 
-:: but we try anyway just in case it's only stopped.
-net start ssh-agent >nul 2>&1
-
-:: Add the key
-echo Adding SSH Key "silicon"...
-call ssh-add "%USERPROFILE%\.ssh\silicon"
-
+:: Check if git is actually installed/recognized in CMD
+where git >nul 2>nul
 if %ERRORLEVEL% NEQ 0 (
-    color 0C
     echo.
-    echo [ERROR] Could not add SSH key.
+    echo [CRITICAL ERROR] Git is not found in your Windows PATH.
+    echo Since you use Git Bash, you might not have added Git to the Windows Command Prompt.
     echo.
-    echo SOLUTION:
-    echo 1. Right-click this file and select 'Run as Administrator' once.
-    echo 2. OR Open Services [Win+R, type services.msc].
-    echo 3. Find 'OpenSSH Authentication Agent', set to Automatic and Start it.
-    echo.
+    echo Please re-install Git for Windows and select "Add Git to PATH"
+    echo OR run this script via Git Bash instead.
     pause
     exit /b
 )
 
-:: ----------------------------------------------------------
-:: STEP 2: Pull latest changes
-:: ----------------------------------------------------------
-echo.
-echo [Step 2] Pulling updates from origin/main...
 git pull origin main
 
 :: ----------------------------------------------------------
-:: STEP 3: Add changes and ask for commit message
+:: STEP 2: Add changes and ask for commit message
 :: ----------------------------------------------------------
 echo.
-echo [Step 3] Staging changes...
+echo [Step 2] Staging changes...
 git add .
 
 echo.
@@ -62,10 +55,10 @@ if "%CommitMessage%"=="" (
 git commit -m "%CommitMessage%"
 
 :: ----------------------------------------------------------
-:: STEP 4: Push to main
+:: STEP 3: Push to main
 :: ----------------------------------------------------------
 echo.
-echo [Step 4] Pushing to origin/main...
+echo [Step 3] Pushing to origin/main...
 git push origin main
 
 echo.
