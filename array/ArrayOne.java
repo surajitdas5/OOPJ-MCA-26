@@ -13,6 +13,7 @@ class ArrayOne{
 		// initialization
 		//arr[0] = 10;
 		
+		//dataType[] arrayVar = new dataType[size];
 		//int[] brr = new int[10]; // declaration + instantiation
 		//int[] crr = {1, 2, 3, 4, 5}; // declaration + instantiation + initialization
 		
