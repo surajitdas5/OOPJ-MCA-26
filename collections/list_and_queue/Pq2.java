@@ -1,22 +1,26 @@
 import java.util.*;
-class Pq1{
+
+class IntComparator implements Comparator<Integer>{
+    @Override
+    public int compare(Integer n1, Integer n2){
+        // highest number has the highest priority
+        return n2 - n1;
+    }
+}
+
+class Pq2{
     public static void main(String args[]){
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>(new IntComparator());
         pq.add(10);
         pq.add(1);
         pq.add(2);
         pq.add(20);
         pq.add(5);
 
-        // PriorityQueue<Integer> copy = new PriorityQueue<>(pq);
-
         // System.out.println(pq);
 
         while(!pq.isEmpty()){
             System.out.print(pq.poll()+" ");
         }
-        // System.out.println();
-        // System.out.println(pq);
-        // System.out.println(copy);
     }
 }
