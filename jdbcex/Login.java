@@ -19,6 +19,7 @@ public class Login {
 			Class.forName(driver);
 			Connection con = DriverManager.getConnection(connection_url, username, password);
 			String sql = "SELECT * FROM mca_user WHERE email='"+email+"' AND password='"+pass+"'";
+			System.out.println(sql);
 			Statement smt = con.createStatement();
 			ResultSet rs = smt.executeQuery(sql);
 			

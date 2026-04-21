@@ -7,7 +7,7 @@ public class ConnecttionTest {
 		try {
 //			Step 2: Load Driver
 			Class.forName("org.postgresql.Driver");
-//			Strp 3: Establish Connection
+//			Step 3: Establish Connection
 			Connection con = DriverManager.getConnection("jdbc:postgresql://192.168.1.17:5432/mca_25_db", "25mmca01", "25mmca01"); // url, username, password
 			if(con != null) {
 				System.out.println("Connected...");
